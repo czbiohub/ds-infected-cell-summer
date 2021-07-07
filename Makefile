@@ -2,6 +2,7 @@ FASTQ_DIR1=/mnt/ibm_lg/jacklyn.luu/fastqs/
 FASTQ_DIR2=/mnt/ibm_lg/elianna/fastqs/
 OUTPUT_DIR=/mnt/ibm_lg/elianna/output
 
+
 # HAV_library_A HAV_library_B DENV_library_A DENV_library_B HCV_library_A
 #EV_library_A EV_library_B RV_library_A RV_library_B Wang_229E_library_A Wang_229E_library_B Wang_OC43_library_A Wang_OC43_library_B Wang_SARS-CoV2_library_A Wang_SARS-CoV2_library_B
 

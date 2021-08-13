@@ -2,51 +2,21 @@
   "name": "infected-cell-portal",
   "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.4.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "axios": "^0.21.1",
-    "cz-ui": "^0.4.18",
-    "d3": "^7.0.0",
-    "hub-ui": "https://github.com/czbiohub/hub-ui.git#aopisco/components",
-    "node-sass": "4.14.1",
-    "openseadragon": "^2.4.2",
-    "openseadragon-react-viewer": "https://github.com/kyleawayan/openseadragon-react-viewer#manifest-url-update",
-    "plotly.js": "^2.2.0",
-    "react": "^17.0.2",
-    "react-device-detect": "^1.17.0",
-    "react-dom": "^17.0.2",
-    "react-ga": "^3.3.0",
-    "react-plotly.js": "^2.5.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
-    "react-select": "^4.3.1",
-    "web-vitals": "^1.0.1"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "dependencies": {
+    "@czbiohub/cz-ui": "^0.2.8",
+    "d3-fetch": "^2.0.0",
+    "next": "11.1.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.1.0"
   }
 }

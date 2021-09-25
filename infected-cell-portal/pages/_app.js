@@ -1,5 +1,5 @@
 import { BiohubUI } from "@czbiohub/cz-ui";
-import "@czbiohub/cz-ui/dist/cz-ui.cjs.development.css";
+import "@czbiohub/cz-ui/dist/main.css";
 import "../styles/globals.css";
 import NavBar from "../components/NavBar/NavBar";
 import Footer from "../components/Footer/Footer";

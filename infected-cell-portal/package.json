@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@czbiohub/cz-ui": "^0.2.8",
+    "@czbiohub/cz-ui": "^0.4.2",
     "d3-fetch": "^2.0.0",
     "next": "11.1.0",
     "react": "17.0.2",

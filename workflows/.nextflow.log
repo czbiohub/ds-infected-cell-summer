@@ -1,0 +1,59 @@
+Dec-08 14:35:05.065 [main] DEBUG nextflow.cli.Launcher - $> nextflow run hello
+Dec-08 14:35:05.126 [main] INFO  nextflow.cli.CmdRun - N E X T F L O W  ~  version 21.04.2
+Dec-08 14:35:05.145 [main] DEBUG nextflow.scm.AssetManager - Listing projects in folder: /home/jacklyn.luu/.nextflow/assets
+Dec-08 14:35:05.155 [main] INFO  nextflow.cli.CmdRun - Pulling nextflow-io/hello ...
+Dec-08 14:35:05.156 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/nextflow-io/hello/contents/nextflow.config
+Dec-08 14:35:06.125 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/nextflow-io/hello/contents/main.nf
+Dec-08 14:35:06.311 [main] DEBUG nextflow.scm.RepositoryProvider - Request [credentials -:-] -> https://api.github.com/repos/nextflow-io/hello
+Dec-08 14:35:06.496 [main] DEBUG nextflow.scm.AssetManager - Pulling nextflow-io/hello -- Using remote clone url: https://github.com/nextflow-io/hello.git
+Dec-08 14:35:07.335 [main] INFO  nextflow.cli.CmdRun -  downloaded from https://github.com/nextflow-io/hello.git
+Dec-08 14:35:07.357 [main] INFO  nextflow.cli.CmdRun - Launching `nextflow-io/hello` [golden_raman] - revision: ec11eb0ec7 [master]
+Dec-08 14:35:07.365 [main] DEBUG nextflow.config.ConfigBuilder - Found config base: /home/jacklyn.luu/.nextflow/assets/nextflow-io/hello/nextflow.config
+Dec-08 14:35:07.365 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/jacklyn.luu/ds-infected-cell-summer/workflows/nextflow.config
+Dec-08 14:35:07.366 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jacklyn.luu/.nextflow/assets/nextflow-io/hello/nextflow.config
+Dec-08 14:35:07.366 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/jacklyn.luu/ds-infected-cell-summer/workflows/nextflow.config
+Dec-08 14:35:07.371 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Dec-08 14:35:07.387 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+Dec-08 14:35:07.491 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; plugins-dir=/home/jacklyn.luu/.nextflow/plugins
+Dec-08 14:35:07.492 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+Dec-08 14:35:07.506 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins local root: .nextflow/plr/21921f6807262d1f701978cdf8a1f5c4
+Dec-08 14:35:07.512 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+Dec-08 14:35:07.513 [main] INFO  org.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+Dec-08 14:35:07.517 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.4.1 in 'deployment' mode
+Dec-08 14:35:07.522 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+Dec-08 14:35:07.523 [main] DEBUG nextflow.plugin.PluginUpdater - Installing plugin nf-tower version: 1.1.0
+Dec-08 14:35:07.525 [main] INFO  org.pf4j.AbstractPluginManager - Plugin 'nf-tower@1.1.0' resolved
+Dec-08 14:35:07.526 [main] INFO  org.pf4j.AbstractPluginManager - Start plugin 'nf-tower@1.1.0'
+Dec-08 14:35:07.530 [main] DEBUG nextflow.plugin.BasePlugin - Plugin started nf-tower@1.1.0
+Dec-08 14:35:07.568 [main] DEBUG nextflow.Session - Session uuid: 7f0b682d-80c5-46ae-9c25-bbc92a3c06e9
+Dec-08 14:35:07.568 [main] DEBUG nextflow.Session - Run name: golden_raman
+Dec-08 14:35:07.569 [main] DEBUG nextflow.Session - Executor pool size: 112
+Dec-08 14:35:07.593 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 21.04.2 build 5558
+  Created: 12-07-2021 07:54 UTC (00:54 PDT)
+  System: Linux 5.4.0-84-generic
+  Runtime: Groovy 3.0.7 on OpenJDK 64-Bit Server VM 11.0.11+9-Ubuntu-0ubuntu2.20.04
+  Encoding: UTF-8 (UTF-8)
+  Process: 4090510@tesla [127.0.1.1]
+  CPUs: 112 - Mem: 1.5 TB (128.4 GB) - Swap: 32 GB (31.7 GB)
+Dec-08 14:35:07.612 [main] DEBUG nextflow.Session - Work-dir: /mnt/ibm_lg/jacklyn.luu/nexflow-work [nfs]
+Dec-08 14:35:07.612 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /home/jacklyn.luu/.nextflow/assets/nextflow-io/hello/bin
+Dec-08 14:35:07.623 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+Dec-08 14:35:07.635 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+Dec-08 14:35:07.637 [main] DEBUG nextflow.Session - Observer factory: TowerFactory
+Dec-08 14:35:07.752 [main] DEBUG nextflow.Session - Session start invoked
+Dec-08 14:35:07.765 [main] DEBUG io.seqera.tower.plugin.TowerClient - Creating Tower observer -- endpoint=http://nftower.czbiohub.org:8000/api; requestInterval=1s; aliveInterval=1m; maxRetries=5; backOffBase=3; backOffDelay=250
+Dec-08 14:35:07.781 [main] DEBUG nextflow.cli.Launcher - Operation aborted
+nextflow.exception.AbortOperationException: Unable to connect Tower host: http://nftower.czbiohub.org:8000
+	at io.seqera.tower.plugin.TowerClient.onFlowCreate(TowerClient.groovy:264)
+	at nextflow.Session$_notifyFlowCreate_closure21.doCall(Session.groovy:1016)
+	at nextflow.Session$_notifyFlowCreate_closure21.call(Session.groovy)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2318)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2303)
+	at org.codehaus.groovy.runtime.DefaultGroovyMethods.each(DefaultGroovyMethods.java:2344)
+	at nextflow.Session.notifyFlowCreate(Session.groovy:1016)
+	at nextflow.Session.start(Session.groovy:494)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:115)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:302)
+	at nextflow.cli.Launcher.run(Launcher.groovy:475)
+	at nextflow.cli.Launcher.main(Launcher.groovy:657)

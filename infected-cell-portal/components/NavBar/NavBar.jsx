@@ -57,6 +57,7 @@ export default function NavBar() {
         accent
         menuOpen={menuOpen}
         onHamburgerClick={setMenuOpen}
+        onLogoClick={() => router.push("/")}
       >
         {pages.map((page, i) => (
           <NavLink key={i} selected={router.pathname === page.path}>
@@ -73,7 +74,7 @@ export default function NavBar() {
 
   const DesktopMenu = () => {
     return (
-      <Bar title={menuTitle} accent>
+      <Bar title={menuTitle} accent onLogoClick={() => router.push("/")}>
         {pages.map((page, i) => (
           <NavLink key={i} selected={router.pathname === page.path}>
             <Link href={page.path}>

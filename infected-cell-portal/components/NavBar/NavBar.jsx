@@ -33,7 +33,7 @@ const menuTitle = "Infected Cell";
 export default function NavBar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [width, setWidth] = useState(999);
+  const [width, setWidth] = useState(0);
 
   useEffect(() => {
     setWidth(window.innerWidth);

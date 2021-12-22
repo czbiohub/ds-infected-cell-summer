@@ -10,6 +10,7 @@ const InfoBox = function (props) {
   const anchorProps = {};
   if (props.openInNewTab) {
     anchorProps.target = "_blank";
+    anchorProps.rel = "noreferrer";
   }
   return (
     <div className={cs.container}>

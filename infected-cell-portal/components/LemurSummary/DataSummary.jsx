@@ -1,124 +1,24 @@
 import React, { Component } from "react";
 import { orderBy, filter } from "lodash/fp";
 
-import { Container, Select, Table, Heading } from "@czbiohub/cz-ui";
+import { Container, Select, Table } from "@czbiohub/cz-ui";
 import cs from "./DataSummary.module.scss";
 import loadingStyles from "../../styles/loading.module.scss";
-
-import { csv } from "d3-fetch";
-
-const COLUMNS = [
-  {
-    dataKey: "First Author",
-    header: "First Author",
-    bold: true,
-    width: 100,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Virus Acronym",
-    header: "Virus Acronym",
-    width: 100,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Virus",
-    header: "Virus",
-    width: 100,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Publication",
-    header: "Publication",
-    width: 400,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Link to raw data",
-    header: "Link to raw data",
-    width: 400,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Library Used",
-    header: "Library Used",
-    width: 100,
-    flexGrow: 3,
-  },
-  {
-    dataKey: "Status",
-    header: "Status",
-    width: 100,
-    flexGrow: 3,
-  },
-];
-
-const Individuals = [
-  {
-    value: null,
-    label: "Show all",
-  },
-  {
-    value: "Dengue virus 2 16681 strain",
-    label: "Dengue",
-  },
-  {
-    value: "SARS-CoV-2",
-    label: "SARS-CoV-2",
-  },
-  {
-    value: "Human coronavirus OC43",
-    label: "Human coronavirus",
-  },
-  {
-    value: "Human coronavirus 229E",
-    label: "Human coronavirus",
-  },
-  {
-    value: "Human coronavirus NL63",
-    label: "Human coronavirus",
-  },
-  {
-    value: "Hepatitis C virus JFH1",
-    label: "Hepatitis C",
-  },
-  {
-    value: "Hepatitis A virus",
-    label: "Hepatitis A",
-  },
-  {
-    value: "West Nile virus",
-    label: "West Nile",
-  },
-  {
-    value: "enterovirus D68",
-    label: "enterovirus",
-  },
-  {
-    value: "Rhinovirus C15",
-    label: "Rhinovirus",
-  },
-  {
-    value: "Ebola (Mayinga)",
-    label: "Ebola",
-  },
-];
 
 class DataSummary extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selectedIndividual: null,
+      selectedDonor: "",
       searchQuery: "",
       sortParams: null,
-      tableData: null,
     };
   }
 
-  setSelectedIndividual = (selectedIndividual) => {
+  setSelectedDonor = (selectedDonor) => {
     this.setState({
-      selectedIndividual,
+      selectedDonor,
     });
   };
 
@@ -133,18 +33,6 @@ class DataSummary extends Component {
       sortParams,
     });
   };
-
-  setTableData = (tableData) => {
-    this.setState({
-      tableData,
-    });
-  };
-
-  componentDidMount() {
-    csv("/data/CRISPR_screen_datasets.csv").then((csvData) => {
-      this.setTableData(csvData);
-    });
-  }
 
   // Sort the data based on the sort params.
   sortData = (data) => {
@@ -163,12 +51,11 @@ class DataSummary extends Component {
       .includes(searchQuery.toLowerCase());
 
   // Filter the data based on various options.
-  filterData = (data) => {
-    const { selectedIndividual, searchQuery } = this.state;
+  filterData = (data, filterKey) => {
+    const { selectedDonor, searchQuery } = this.state;
     let filteredData = data;
-    console.log(filteredData);
-    if (selectedIndividual) {
-      filteredData = filter(["Individual", selectedIndividual], filteredData);
+    if (selectedDonor) {
+      filteredData = filter([filterKey, selectedDonor], filteredData);
     }
 
     if (searchQuery) {
@@ -182,13 +69,14 @@ class DataSummary extends Component {
     return filteredData;
   };
 
-  processData = (data) => {
-    return this.sortData(this.filterData(data));
+  processData = (data, filterKey) => {
+    return this.sortData(this.filterData(data, filterKey));
   };
 
   // const VerboseTableStory = () => {
   render() {
-    const { selectedIndividual, sortParams, tableData } = this.state;
+    const { selectedDonor, sortParams } = this.state;
+    const { data, columns, filterItems, filterKey } = this.props;
     // Sorting is not implemented in the Table.
     // You must store the sortParams and implement the sorting logic in the parent component.
     // const [sortParams, setSortParams] = React.useState(null);
@@ -202,23 +90,17 @@ class DataSummary extends Component {
 
     return (
       <div className={loadingStyles.container}>
-        {!tableData && (
-          <div className={loadingStyles.loadingContainer}>
-            <div className={loadingStyles.loadingCenter}>Loading...</div>
-          </div>
-        )}
         <div className={cs.container}>
           <Container>
-            <Heading title="Data summary" />
             <div className={cs.controls}>
               {/* <Search className={cs.search} onSearch={this.setSearchQuery} /> */}
               <Select
                 // items={statuses.map((status, i) => ({value: i, label: status}))}
                 className={cs.select}
-                items={Individuals}
-                value={selectedIndividual}
-                onChange={this.setSelectedIndividual}
-                placeholder="Filter by individual..."
+                items={filterItems}
+                value={selectedDonor}
+                onChange={this.setSelectedDonor}
+                placeholder="Filter by donor..."
               />
             </div>
             <div className={cs.description}>
@@ -226,10 +108,10 @@ class DataSummary extends Component {
             </div>
           </Container>
           <div className={cs.tableContainer}>
-            {tableData && (
+            {data && (
               <Table
-                data={this.processData(tableData)}
-                columns={COLUMNS}
+                data={this.processData(data, filterKey)}
+                columns={columns}
                 className={cs.table}
                 onSortParamChange={this.setSortParams}
                 sortParams={sortParams}

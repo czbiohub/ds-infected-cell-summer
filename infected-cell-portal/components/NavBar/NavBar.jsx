@@ -78,8 +78,8 @@ const pages = [
     path: "/whereisthedata",
   },
   {
-    title: "Explore Screens",
-    path: "/explorescreens",
+    title: "Heatmaps",
+    path: "/heatmaps",
   },
   {
     title: "Compare Screens",

@@ -15,8 +15,8 @@ export default function Home() {
           <Heading title="Mouse Lemur" />
           <div className={styles.container}>
             <InfoBox
-              title={"The infected cell"}
-              description={"The Infected Cell, an atlas of viral infection"}
+              title={"The Infected Cell: An Atlas for Viral Infection"}
+              description={"As the COVID-19 pandemic has shown, infectious diseases and emerging new viruses remain a major threat to human health. Our goals are to understand virus-host interactions as a guide to developing antiviral therapeutics, to develop vaccines that can prevent infection, to preemptively identify emerging virusees, and to disseminate technologies needed to diagnose and discover the source of microbial infections in the developing world."}
               buttonTitle="Read more about it"
               buttonLink="https://opencell.czbiohub.org/"
               openInNewTab={true}

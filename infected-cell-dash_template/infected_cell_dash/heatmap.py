@@ -90,6 +90,16 @@ def heatmap(vir1, vir2, col1, col2):
     
     return final_df
 
+abbrev = dict()
+abbrev['DENV'] = 'Dengue'
+abbrev['HAV'] = 'Hepatitis A'
+abbrev['HCV'] = 'Hepatitis C'
+abbrev['RV'] = 'Rhinovirus'
+abbrev['Wang_229E'] = 'HCoV 229E'
+abbrev['Wang_OC43'] = 'HCoV OC43'
+abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
+
+
 def final(my_input, vir_dict):
     path_dict = my_path()
     vir1, vir2, df1, df2 = new_input1(path_dict, my_input)

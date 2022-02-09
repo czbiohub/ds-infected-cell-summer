@@ -31,6 +31,7 @@ def configure_app(app: dash.Dash):
                 html.Label('Virus 1'),
                 dcc.Dropdown(
                     id="selected-vir",
+                    value="Wang_229E",
                     options=[
                         {'label': 'Dengue', 'value': 'DENV'},
                         {'label': 'Enterovirus', 'value': 'EV'},
@@ -48,6 +49,7 @@ def configure_app(app: dash.Dash):
                 html.Label('Virus 2'),
                 dcc.Dropdown(
                     id="selected-vir1",
+                    value="Wang_OC43",
                     options=[
                         {'label': 'Dengue', 'value': 'DENV'},
                         {'label': 'Enterovirus', 'value': 'EV'},
@@ -80,7 +82,7 @@ def configure_app(app: dash.Dash):
         final_df, a, combined_df = final([vir1, vir2], tot_vir)
         if not final_df.empty:
                 fig = px.imshow(final_df, labels=dict(x="Viruses", y="Genes", color="Significance (-log[pos score])"),
-                y=combined_df['Shared_Genes'][a], x = [vir1, vir2], title=combined_df['Original Name_x'][a])
+                y=combined_df['Shared_Genes'][a], x = [abbrev[vir1], abbrev[vir2]], title=combined_df['Original Name_x'][a])
                 return fig
         else:
             data = [go.Heatmap( x=[], y=[], z=[])]

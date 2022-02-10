@@ -79,7 +79,8 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1, vir2):
-        fig = final_comparison(vir1, vir2, tot_vir)
+        l1, l2 = final_comparison(vir1, vir2, tot_vir)
+        fig = px.scatter(x=l1, y=l2, labels=dict(x=abbrev[vir1]+' pos|score', y=abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + abbrev[vir1] +  ' and ' + abbrev[vir2])
         return fig
 
     return app

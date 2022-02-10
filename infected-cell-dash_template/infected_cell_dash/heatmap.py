@@ -99,7 +99,6 @@ abbrev['Wang_229E'] = 'HCoV 229E'
 abbrev['Wang_OC43'] = 'HCoV OC43'
 abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
 
-
 def final(my_input, vir_dict):
     path_dict = my_path()
     vir1, vir2, df1, df2 = new_input1(path_dict, my_input)

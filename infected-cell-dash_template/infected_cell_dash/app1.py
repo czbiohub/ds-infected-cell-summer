@@ -60,7 +60,7 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1):
-        fig = single_plot(vir1)
+        fig = single_plot(vir1, abbrev)
         return fig
 
     return app

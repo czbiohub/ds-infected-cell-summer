@@ -86,7 +86,16 @@ def sig_alpha(dict_genes, dict_mostcommon, virus):
 
     return(df, red_x, red_y, gene_names2)
 
-def single_plot(virus):
+abbrev = dict()
+abbrev['DENV'] = 'Dengue'
+abbrev['HAV'] = 'Hepatitis A'
+abbrev['HCV'] = 'Hepatitis C'
+abbrev['RV'] = 'Rhinovirus'
+abbrev['Wang_229E'] = 'HCoV 229E'
+abbrev['Wang_OC43'] = 'HCoV OC43'
+abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
+
+def single_plot(virus, name_dict):
     f1 = file(virus)
     dict_genes, dict_mostcommon = host_factors(f1)
     df, red_x, red_y, gene_names2 = sig_alpha(dict_genes, dict_mostcommon, virus)         
@@ -102,7 +111,7 @@ def single_plot(virus):
     ))
 
     fig.update_layout(
-        title_text = virus + ' Host Factors (CRISPR Screen)'
+        title_text = str(name_dict[virus]) + ' Host Factors (CRISPR Screen)'
     )
 
     fig.update_xaxes(showticklabels=False)

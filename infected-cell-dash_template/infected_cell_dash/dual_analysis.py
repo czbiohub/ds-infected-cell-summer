@@ -57,9 +57,17 @@ def ratio(l1, l2):
                 count += 1
     return(count, len(l1))
 
+abbrev = dict()
+abbrev['DENV'] = 'Dengue'
+abbrev['HAV'] = 'Hepatitis A'
+abbrev['HCV'] = 'Hepatitis C'
+abbrev['RV'] = 'Rhinovirus'
+abbrev['Wang_229E'] = 'HCoV 229E'
+abbrev['Wang_OC43'] = 'HCoV OC43'
+abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
+
 def final_comparison(vir1, vir2, tot_vir):
     l1, l2 = comparo(tot_vir, vir1, vir2)
     count, total = ratio(l1, l2)
-        
-    fig = px.scatter(x=l1, y=l2, labels=dict(x=str(vir1)+' pos|score', y=str(vir2)+' pos|score'), title = 'Comparing pos|score of ' + str(vir1) +  ' and ' + str(vir2))
-    return fig
+    #fig = px.scatter(x=l1, y=l2, labels=dict(x=str(vir1)+' pos|score', y=str(vir2)+' pos|score'), title = 'Comparing pos|score of ' + str(vir1) +  ' and ' + str(vir2))
+    return l1, l2

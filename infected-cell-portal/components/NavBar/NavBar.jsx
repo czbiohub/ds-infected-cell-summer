@@ -85,7 +85,6 @@ const pages = [
     title: "Compare Screens",
     path: "/comparescreens",
   },
-
   {
     title: "Heatmaps",
     path: "/heatmaps",

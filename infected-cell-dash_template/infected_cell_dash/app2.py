@@ -31,6 +31,7 @@ def configure_app(app: dash.Dash):
                 html.Label('Virus 1'),
                 dcc.Dropdown(
                     id="selected-vir",
+                    value="HAV",
                     options=[
                         {'label': 'Dengue', 'value': 'DENV'},
                         {'label': 'Enterovirus', 'value': 'EV'},
@@ -48,6 +49,7 @@ def configure_app(app: dash.Dash):
                 html.Label('Virus 2'),
                 dcc.Dropdown(
                     id="selected-vir1",
+                    value="DENV",
                     options=[
                         {'label': 'Dengue', 'value': 'DENV'},
                         {'label': 'Enterovirus', 'value': 'EV'},

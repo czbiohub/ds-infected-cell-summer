@@ -12,7 +12,7 @@ export default function Home() {
       />
       <Container>
         <div>
-          <Heading title="Mouse Lemur" />
+          <Heading title="Infected Cell" />
           <div className={styles.container}>
             <InfoBox
               title={"The Infected Cell: An Atlas for Viral Infection"}

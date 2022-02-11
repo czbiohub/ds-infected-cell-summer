@@ -23,12 +23,12 @@ export default function Footer() {
       </NavLink>
       <NavLink>
         <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeeB0N7TrklXbCbpc6nDi5e77uad3uZDZ4WCMV77jwhVzxUtQ/viewform?usp=sf_link"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfiFpDh2sHO2gXWngdHU6i-_Nsofzi_BGO9XLlIhWeZeIHffA/viewform?usp=sf_link"
           target="_blank"
           rel="noreferrer"
           className={styles.link}
         >
-          Contact Us (this link is still for Tabula Sapiens)
+          Contact Us
         </a>
       </NavLink>
     </F>

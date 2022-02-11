@@ -53,7 +53,7 @@ export default function about() {
             </Link>{" "}
             and feel free to reach out to our group using the{" "}
             <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSeWMqdbrCtSZ2U-cp7OELswEMVchPUJZ-L8REwQf3-nC0JmWQ/viewform?usp=sf_link"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfiFpDh2sHO2gXWngdHU6i-_Nsofzi_BGO9XLlIhWeZeIHffA/viewform?usp=sf_link"
               target="_blank"
               rel="noreferrer"
             >

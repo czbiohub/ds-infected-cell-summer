@@ -18,7 +18,7 @@ export default function Home() {
               title={"The Infected Cell: An Atlas for Viral Infection"}
               description={"As the COVID-19 pandemic has shown, infectious diseases and emerging new viruses remain a major threat to human health. Our goals are three-fold: first, to understand virus-host interactions as a guide for developing antiviral therapeutics, second to develop vaccines and preemptively identify emerging viruses, and finally, to disseminate technologies needed to diagnose and discover the source of microbial infections."}
               buttonTitle="Read more about it"
-              buttonLink="https://opencell.czbiohub.org/"
+              buttonLink="https://ds-infected-cell-summer.vercel.app/"
               openInNewTab={true}
               image={"/images/opencell_logo.webp"}
             />

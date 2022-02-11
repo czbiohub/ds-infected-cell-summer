@@ -1,5 +1,6 @@
 from __future__ import generator_stop
 from typing import Optional
+from black import out
 
 import dash
 from dash.dependencies import Input, Output
@@ -15,13 +16,14 @@ import os
 from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
+import argparse
 
 from single_analysis import SingleAnalysis
 
 fig = go.Figure()
-single_analysis = SingleAnalysis(output_path='/Users/kyle/Downloads/untitled folder/output_072321')
 
-def configure_app(app: dash.Dash):
+def configure_app(app: dash.Dash, output_path):
+    single_analysis = SingleAnalysis(output_path)
     class Ids:
         pass
 
@@ -67,6 +69,10 @@ def configure_app(app: dash.Dash):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output_path", type=str)
+    args = parser.parse_args()
+
     app = dash.Dash(__name__)
-    configure_app(app)
+    configure_app(app, args.output_path)
     app.run_server(debug=True, port=8083)

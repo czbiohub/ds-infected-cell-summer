@@ -17,7 +17,7 @@ export default function whereisthedata({
         <div>
           <Heading title="Data Release Policy" />
           <p>
-            Our goal is to make sequence data rapidly and broadly available to
+            Our goal is to make the data generated within this project rapidly and broadly available to
             the scientific community as a community resource. It is our
             intention to publish the work of this project in a timely fashion,
             and we welcome collaborative interaction on the project and
@@ -39,7 +39,7 @@ export default function whereisthedata({
             for publication or are interested in collaborating on the analyses
             of these data, please use the{" "}
             <a
-              href="https://docs.google.com/forms/d/e/1FAIpQLSeWMqdbrCtSZ2U-cp7OELswEMVchPUJZ-L8REwQf3-nC0JmWQ/viewform?usp=sf_link"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfiFpDh2sHO2gXWngdHU6i-_Nsofzi_BGO9XLlIhWeZeIHffA/viewform?usp=sf_link"
               target="_blank"
               rel="noreferrer"
             >

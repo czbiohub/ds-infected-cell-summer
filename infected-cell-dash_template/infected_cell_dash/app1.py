@@ -16,10 +16,10 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 
-import single_analysis
-from single_analysis import *
+from single_analysis import SingleAnalysis
 
 fig = go.Figure()
+single_analysis = SingleAnalysis(output_path='/Users/kyle/Downloads/untitled folder/output_072321')
 
 def configure_app(app: dash.Dash):
     class Ids:
@@ -60,7 +60,7 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1):
-        fig = single_plot(vir1, abbrev)
+        fig = single_analysis.single_plot(vir1, single_analysis.abbrev)
         return fig
 
     return app

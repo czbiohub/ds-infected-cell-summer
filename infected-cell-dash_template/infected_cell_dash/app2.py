@@ -16,10 +16,10 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 
-import dual_analysis
-from dual_analysis import *
+from dual_analysis import DualAnalysis
 
 fig = go.Figure()
+dual_analysis = DualAnalysis(output_path='/Users/kyle/Downloads/untitled folder/output_072321')
 
 def configure_app(app: dash.Dash):
     class Ids:
@@ -79,8 +79,8 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1, vir2):
-        l1, l2 = final_comparison(vir1, vir2, tot_vir)
-        fig = px.scatter(x=l1, y=l2, labels=dict(x=abbrev[vir1]+' pos|score', y=abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + abbrev[vir1] +  ' and ' + abbrev[vir2])
+        l1, l2 = dual_analysis.final_comparison(vir1, vir2, dual_analysis.tot_vir)
+        fig = px.scatter(x=l1, y=l2, labels=dict(x=dual_analysis.abbrev[vir1]+' pos|score', y=dual_analysis.abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2])
         return fig
 
     return app

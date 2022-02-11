@@ -15,13 +15,14 @@ import os
 from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
+import argparse
 
-import dual_analysis
-from dual_analysis import *
+from dual_analysis import DualAnalysis
 
 fig = go.Figure()
 
-def configure_app(app: dash.Dash):
+def configure_app(app: dash.Dash, output_path):
+    dual_analysis = DualAnalysis(output_path)
     class Ids:
         pass
 
@@ -79,14 +80,18 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1, vir2):
-        l1, l2 = final_comparison(vir1, vir2, tot_vir)
-        fig = px.scatter(x=l1, y=l2, labels=dict(x=abbrev[vir1]+' pos|score', y=abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + abbrev[vir1] +  ' and ' + abbrev[vir2])
+        l1, l2 = dual_analysis.final_comparison(vir1, vir2, dual_analysis.tot_vir)
+        fig = px.scatter(x=l1, y=l2, labels=dict(x=dual_analysis.abbrev[vir1]+' pos|score', y=dual_analysis.abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2])
         return fig
 
     return app
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("output_path", type=str)
+    args = parser.parse_args()
+
     app = dash.Dash(__name__)
-    configure_app(app)
+    configure_app(app, args.output_path)
     app.run_server(debug=True, port=8084)

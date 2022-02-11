@@ -64,7 +64,7 @@ class Heatmap:
     def my_path(self):
         path_dict = dict()
         for virus in self.virus_list:
-            path_dict[virus] = self.pickle_path + str(virus) + os.sep + virus + '.pkl'
+            path_dict[virus] = self.pickle_path + "/" + str(virus) + os.sep + virus + '.pkl'
         return path_dict
 
     @staticmethod

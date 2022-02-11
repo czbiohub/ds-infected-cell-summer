@@ -3,7 +3,7 @@ import styles from "../styles/Dash.module.scss";
 export default function MarkerGenes() {
   return (
     <iframe
-      src="http://127.0.0.1:8083/"
+      src="https://onclass-dash-development.ds.czbiohub.org/ic-app1"
       className={styles.dash}
       title="Heatmap"
     />

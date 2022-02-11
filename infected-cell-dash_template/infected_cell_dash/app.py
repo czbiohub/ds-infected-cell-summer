@@ -16,10 +16,10 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 
-import heatmap
-from heatmap import *
+from heatmap import Heatmap
 
 fig = go.Figure()
+heatmap = Heatmap(output_path='/Users/kyle/Downloads/untitled folder/output_072321', pickle_path='/Users/kyle/Downloads/untitled folder/pathway_analysis_pickle/')
 
 def configure_app(app: dash.Dash):
     class Ids:
@@ -79,10 +79,10 @@ def configure_app(app: dash.Dash):
     )
 
     def update_figure(vir1, vir2):
-        final_df, a, combined_df = final([vir1, vir2], tot_vir)
+        final_df, a, combined_df = heatmap.final([vir1, vir2], heatmap.tot_vir)
         if not final_df.empty:
                 fig = px.imshow(final_df, labels=dict(x="Viruses", y="Genes", color="Significance (-log[pos score])"),
-                y=combined_df['Shared_Genes'][a], x = [abbrev[vir1], abbrev[vir2]], title=combined_df['Original Name_x'][a])
+                y=combined_df['Shared_Genes'][a], x = [heatmap.abbrev[vir1], heatmap.abbrev[vir2]], title=combined_df['Original Name_x'][a])
                 return fig
         else:
             data = [go.Heatmap( x=[], y=[], z=[])]

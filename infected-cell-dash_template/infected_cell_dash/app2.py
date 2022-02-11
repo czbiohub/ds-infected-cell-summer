@@ -21,8 +21,10 @@ from dual_analysis import DualAnalysis
 
 fig = go.Figure()
 
-def configure_app(app: dash.Dash, output_path):
+def dash_dual_analysis(output_path):
     dual_analysis = DualAnalysis(output_path)
+    app = dash.Dash(__name__)
+    
     class Ids:
         pass
 
@@ -86,12 +88,14 @@ def configure_app(app: dash.Dash, output_path):
 
     return app
 
+def prod(output_path):
+    app = dash_dual_analysis(output_path)
+    return app.server
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("output_path", type=str)
     args = parser.parse_args()
 
-    app = dash.Dash(__name__)
-    configure_app(app, args.output_path)
+    app = dash_dual_analysis(args.output_path)
     app.run_server(debug=True, port=8084)

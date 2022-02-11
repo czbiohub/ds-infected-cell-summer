@@ -22,9 +22,9 @@ from single_analysis import SingleAnalysis
 
 fig = go.Figure()
 
-def dash_single_analysis(output_path):
+def dash_single_analysis(output_path, requests_pathname_prefix="/"):
     single_analysis = SingleAnalysis(output_path)
-    app = dash.Dash(__name__)
+    app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
 
     class Ids:
         pass
@@ -69,8 +69,8 @@ def dash_single_analysis(output_path):
 
     return app
 
-def prod(output_path):
-    app = dash_single_analysis(output_path)
+def prod(output_path, requests_pathname_prefix="/"):
+    app = dash_single_analysis(output_path, requests_pathname_prefix)
     return app.server
 
 if __name__ == "__main__":

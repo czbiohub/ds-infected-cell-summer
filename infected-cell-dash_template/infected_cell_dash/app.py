@@ -21,9 +21,9 @@ from heatmap import Heatmap
 
 fig = go.Figure()
 
-def dash_heatmaps(output_path, pickle_path):
+def dash_heatmaps(output_path, pickle_path, requests_pathname_prefix="/"):
     heatmap = Heatmap(output_path, pickle_path)
-    app = dash.Dash(__name__)
+    app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
 
     class Ids:
         pass
@@ -98,8 +98,8 @@ def dash_heatmaps(output_path, pickle_path):
 
     return app
 
-def prod(output_path, pickle_path):
-    app = dash_heatmaps(output_path, pickle_path)
+def prod(output_path, pickle_path, requests_pathname_prefix="/"):
+    app = dash_heatmaps(output_path, pickle_path, requests_pathname_prefix)
     return app.server
 
 if __name__ == "__main__":

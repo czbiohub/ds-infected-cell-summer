@@ -16,14 +16,15 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 import argparse
+from app import dash_heatmaps
 
 from dual_analysis import DualAnalysis
 
 fig = go.Figure()
 
-def dash_dual_analysis(output_path):
+def dash_dual_analysis(output_path, requests_pathname_prefix="/"):
     dual_analysis = DualAnalysis(output_path)
-    app = dash.Dash(__name__)
+    app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
     
     class Ids:
         pass
@@ -88,8 +89,8 @@ def dash_dual_analysis(output_path):
 
     return app
 
-def prod(output_path):
-    app = dash_dual_analysis(output_path)
+def prod(output_path, requests_pathname_prefix="/"):
+    app = dash_dual_analysis(output_path, requests_pathname_prefix)
     return app.server
 
 if __name__ == "__main__":

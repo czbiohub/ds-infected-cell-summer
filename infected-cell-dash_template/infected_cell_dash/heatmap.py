@@ -45,9 +45,6 @@ class Heatmap:
                 if filepath.endswith("gene_summary.txt") and virus in filepath:          
                     return filepath
 
-    #GSEAPY analysis outputs all genes in all caps, even if I inputted them lower case. Affects the genes which begin with HSA-MIR and others
-    #Easy fix just made my input genes all caps too            
-
     @staticmethod
     def host_factors(f1):
         dict_genes = {}
@@ -61,6 +58,7 @@ class Heatmap:
         dict_mostcommon = dict(k.most_common(30))
         return dict_genes, dict_mostcommon
 
+    @staticmethod
     def my_path(self):
         path_dict = dict()
         for virus in self.virus_list:
@@ -90,6 +88,7 @@ class Heatmap:
             return combined_df
         else:
             return pd.DataFrame()
+
     @staticmethod
     def my_max(df):
         return df['Len'].idxmax()
@@ -111,16 +110,15 @@ class Heatmap:
         
         return final_df
 
-
-
     def final(self, my_input, vir_dict):
-        path_dict = self.my_path()
+        path_dict = self.my_path(self)
         vir1, vir2, df1, df2 = self.new_input1(path_dict, my_input)
         combined_df = self.merge(df1, df2)
         if combined_df.empty:
             return pd.DataFrame(), 0, combined_df
         else:
             a = self.my_max(combined_df)
+            print(a)
             col1, col2 = self.col_df(a, vir1, vir2, vir_dict, combined_df)
             final_df = self.heatmap(vir1, vir2, col1, col2)
             return final_df, a, combined_df

@@ -55,15 +55,23 @@ class DualAnalysis:
         return dict_genes, dict_mostcommon
 
     @staticmethod
-    def comparo(tot_vir, vir1, vir2):
+    def comparo(vir1, vir2, total_vir):
         l1 = list()
         l2 = list()
+        shared_genes = list()
 
-        for key in tot_vir[vir1]:
-            if key in tot_vir[vir2]:
-                l1.append(tot_vir[vir1][key])
-                l2.append(tot_vir[vir2][key])
-        return l1,l2
+        for key in total_vir[vir1]:
+            if key in total_vir[vir2]:
+                l1.append(total_vir[vir1][key])
+                l2.append(total_vir[vir2][key])
+                shared_genes.append(key)
+        
+        df = pd.DataFrame()
+        df['Genes'] = shared_genes
+        df['col_vir1'] = l1
+        df['col_vir2'] = l2
+
+        return df
 
     @staticmethod
     def ratio(l1, l2):
@@ -73,9 +81,3 @@ class DualAnalysis:
                 if 0.9 <= float(l1[i])/float(l2[i]) <= 1.1:
                     count += 1
         return(count, len(l1))
-
-    def final_comparison(self, vir1, vir2, tot_vir):
-        l1, l2 = self.comparo(tot_vir, vir1, vir2)
-        count, total = self.ratio(l1, l2)
-        #fig = px.scatter(x=l1, y=l2, labels=dict(x=str(vir1)+' pos|score', y=str(vir2)+' pos|score'), title = 'Comparing pos|score of ' + str(vir1) +  ' and ' + str(vir2))
-        return l1, l2

@@ -51,71 +51,79 @@ class SingleAnalysis:
         for gene in sortedgenes:
             virus_list.append(virus)
         
-        x = list()
-        y = list()
+        grey_x = list()
+        grey_y = list()
         gene_names1 = list()
         enriched_list1 = list()
-        genes_plot1 = list()
         for i, gene in enumerate(sortedgenes):
             if gene in dict_mostcommon:
                 continue
-            x.append(i/len(sortedgenes))
-            y.append(dict_genes[gene])
+            grey_x.append(i/len(sortedgenes))
+            grey_y.append(dict_genes[gene])
             gene_names1.append(gene)
             enriched_list1.append('Not Enriched')
-            genes_plot1.append(' ')
 
-        final_dict1 = dict()
-        final_dict1['Gene'] = gene_names1
-        final_dict1['30 Most Enriched Genes'] = enriched_list1
-        final_dict1['Genes (Alpabetically)'] = x
-        final_dict1['Significance'] = y
-        final_dict1['genes_plot'] = genes_plot1
+        grey_df = pd.DataFrame()
+        grey_df['Gene'] = gene_names1
+        grey_df['30 Most Enriched Genes'] = enriched_list1
+        grey_df['Genes (Alphabetically)'] = grey_x
+        grey_df['Significance'] = grey_y
         
         red_x = list()
         red_y = list()
         gene_names2 = list()
         enriched_list2 = list()
-        genes_plot2 = list()
         for i, gene in enumerate(sortedsiggenes):
             if gene in dict_mostcommon:
                 red_x.append(i/len(sortedsiggenes))
                 red_y.append(dict_mostcommon[gene])
                 gene_names2.append(gene)
                 enriched_list2.append('Enriched')
-                genes_plot2.append(gene)
 
-        final_dict2 = dict()
-        final_dict2['Gene'] = gene_names2
-        final_dict2['30 Most Enriched Genes'] = enriched_list2
-        final_dict2['Genes (Alpabetically)'] = red_x
-        final_dict2['Significance'] = red_y
-        final_dict2['genes_plot'] = genes_plot2
+        red_df = pd.DataFrame()
+        red_df['Gene'] = gene_names2
+        red_df['30 Most Enriched Genes'] = enriched_list2
+        red_df['Genes (Alphabetically)'] = red_x
+        red_df['Significance'] = red_y
         
-        df1 = pd.DataFrame(final_dict1)
-        df2 = pd.DataFrame(final_dict2)
-        df = pd.concat([df1, df2])
+        df = pd.concat([grey_df, red_df])
         df['Virus'] = virus_list
 
-        return(df, red_x, red_y, gene_names2)
+        return grey_df, red_df, df
 
     def single_plot(self, virus, name_dict):
         f1 = self.file(virus)
         dict_genes, dict_mostcommon = self.host_factors(f1)
-        df, red_x, red_y, gene_names2 = self.sig_alpha(dict_genes, dict_mostcommon, virus)         
-        fig = px.scatter(df, x="Genes (Alpabetically)", y="Significance", color = '30 Most Enriched Genes', color_discrete_sequence=["grey", "red"])
+        grey_df, red_df, df = self.sig_alpha(dict_genes, dict_mostcommon, virus)         
+        fig = px.scatter(df, x="Genes (Alphabetically)", y="Significance", color = '30 Most Enriched Genes', color_discrete_sequence=["grey", "red"])
 
         fig.add_trace(go.Scatter(
-            x= red_x,
-            y=red_y,
+            x= red_df['Genes (Alphabetically)'],
+            y= red_df['Significance'],
             mode="text",
             name="Gene Names",
-            text=gene_names2,
-            textposition="top center"
+            text=red_df['Gene'],
+            textposition="top center",
+            hovertemplate=
+            "Significance: %{y}" +
+            "</b><br>" +
+            "Gene Name: %{text}"
+        ))
+
+        fig.add_trace(go.Scatter(
+            x= grey_df['Genes (Alphabetically)'],
+            y= grey_df['Significance'],
+            name=' ',
+            opacity=0,
+            text=grey_df['Gene'],
+            hovertemplate=
+            "Significance: %{y}" +
+            "</b><br>" +
+            "Gene Name: %{text}"
         ))
 
         fig.update_layout(
-            title_text = str(name_dict[virus]) + ' Host Factors (CRISPR Screen)'
+            hoverlabel=dict(bgcolor="white"), title_text = str(name_dict[virus]) + ' Host Factors (CRISPR Screen)'
         )
 
         fig.update_xaxes(showticklabels=False)
@@ -144,7 +152,7 @@ class SingleAnalysis:
         
         df = pd.concat([df_a, df_b, df_c])
         
-        fig = px.scatter(df, x="Genes (Alpabetically)", y="Significance", color = '30 Most Enriched Genes', color_discrete_sequence=["grey", "red"], facet_row="Virus")
+        fig = px.scatter(df, x="Genes (Alphabetically)", y="Significance", color = '30 Most Enriched Genes', color_discrete_sequence=["grey", "red"], facet_row="Virus")
         fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
         
         fig.add_trace(go.Scatter(

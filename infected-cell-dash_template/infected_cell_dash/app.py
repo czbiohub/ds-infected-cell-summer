@@ -109,4 +109,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     app = dash_heatmaps(args.output_path, args.pickle_path)
-    app.run_server(debug=True, port=8082)
+    app.run_server(debug=True, port=8081)

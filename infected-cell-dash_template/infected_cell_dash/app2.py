@@ -83,8 +83,22 @@ def dash_dual_analysis(output_path, requests_pathname_prefix="/"):
     )
 
     def update_figure(vir1, vir2):
-        l1, l2 = dual_analysis.final_comparison(vir1, vir2, dual_analysis.tot_vir)
-        fig = px.scatter(x=l1, y=l2, labels=dict(x=dual_analysis.abbrev[vir1]+' pos|score', y=dual_analysis.abbrev[vir2]+' pos|score'), title = 'Comparing pos|score of ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2])
+        df1 = dual_analysis.comparo(vir1, vir2, dual_analysis.tot_vir)
+        fig = px.scatter(df1, x='col_vir1', y='col_vir2', labels={
+        'col_vir1': dual_analysis.abbrev[vir1],
+        'col_vir2': dual_analysis.abbrev[vir2]},
+        title = 'Comparing Significance of Genes for ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2],
+        hover_name="Genes")
+
+        fig.add_trace(go.Scatter(
+            x= df1['col_vir1'],
+            y=df1['col_vir2'],
+            mode="text",
+            name="Gene Names",
+            text=df1['Genes'],
+            textposition="top center"
+        ))
+
         return fig
 
     return app

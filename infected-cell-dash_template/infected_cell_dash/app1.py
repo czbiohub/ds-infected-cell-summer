@@ -22,17 +22,14 @@ from single_analysis import SingleAnalysis
 
 fig = go.Figure()
 
-def dash_single_analysis(output_path, requests_pathname_prefix="/"):
-    single_analysis = SingleAnalysis(output_path)
+def dash_single_analysis(data_path, requests_pathname_prefix="/"):
+    single_analysis = SingleAnalysis(data_path)
     app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
-
-    class Ids:
-        pass
 
     app.layout = html.Div(
         children = [
             html.Div(children=[
-                html.Label('Virus 1'),
+                html.Label('Virus'),
                 dcc.Dropdown(
                     id="selected-vir",
                     value="DENV",
@@ -69,14 +66,14 @@ def dash_single_analysis(output_path, requests_pathname_prefix="/"):
 
     return app
 
-def prod(output_path, requests_pathname_prefix="/"):
-    app = dash_single_analysis(output_path, requests_pathname_prefix)
+def prod(data_path, requests_pathname_prefix="/"):
+    app = dash_single_analysis(data_path, requests_pathname_prefix)
     return app.server
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("output_path", type=str)
+    parser.add_argument("data_path", type=str)
     args = parser.parse_args()
 
-    app = dash_single_analysis(args.output_path)
+    app = dash_single_analysis(args.data_path)
     app.run_server(debug=True, port=8083)

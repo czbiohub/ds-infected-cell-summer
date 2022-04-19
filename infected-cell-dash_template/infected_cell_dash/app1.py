@@ -17,12 +17,15 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 import argparse
+import utils 
 
 from single_analysis import SingleAnalysis
 
 fig = go.Figure()
 
 def dash_single_analysis(data_path, requests_pathname_prefix="/"):
+    virus_list = utils.list_gene_summary_files(data_path)
+
     single_analysis = SingleAnalysis(data_path)
     app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
 
@@ -32,36 +35,28 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                 html.Label('Virus'),
                 dcc.Dropdown(
                     id="selected-vir",
-                    value="DENV",
-                    options=[
-                        {'label': 'Dengue', 'value': 'DENV'},
-                        {'label': 'Enterovirus', 'value': 'EV'},
-                        {'label': 'Hepatitis A', 'value': 'HAV'},
-                        {'label': 'Hepatitis C', 'value': 'HCV'},
-                        {'label': 'Rhinovirus', 'value': 'RV'},
-                        {'label': 'Human Coronavirus 229E', 'value': 'Wang_229E'},
-                        {'label': 'Human Coronavirus OC43', 'value': 'Wang_OC43'},
-                        {'label': 'SARS-CoV-2', 'value': 'Wang_SARS-CoV2'},
-                    ],
+                    value=virus_list[0]["value"],
+                    options=virus_list,
                 ),
             ],
         ),
             html.Div(
                 className="graphContainer",
                 children=[
-                    dcc.Graph(className="graph", id="my_scatter"),
-            ],
+                    dcc.Graph(className="graph", id="significance-scatter"),
+                ],
             )
         ],
-        )
-
-    @app.callback(
-        Output("my_scatter","figure"),
-        Input("selected-vir","value"),
     )
 
-    def update_figure(vir1):
-        fig = single_analysis.single_plot(vir1, single_analysis.abbrev)
+    # Update significance scatterplot based on selected virus
+    @app.callback(
+        Output("significance-scatter", "figure"),
+        Input("selected-vir", "value"),
+    )
+    def update_figure(virus_path):
+        virus_name = utils.getFileNameWoExt(virus_path)
+        fig = single_analysis.single_plot(virus_path, virus_name)
         return fig
 
     return app

@@ -2,35 +2,14 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import os
 from collections import Counter
-from plotly.subplots import make_subplots
-from pathlib import Path
 
-fig = go.Figure()
 
 class SingleAnalysis:
     def __init__(self, output_path):
         self.output_path = output_path
 
-        self.abbrev = dict()
-        self.abbrev['DENV'] = 'Dengue'
-        self.abbrev['HAV'] = 'Hepatitis A'
-        self.abbrev['HCV'] = 'Hepatitis C'
-        self.abbrev['RV'] = 'Rhinovirus'
-        self.abbrev['Wang_229E'] = 'HCoV 229E'
-        self.abbrev['Wang_OC43'] = 'HCoV OC43'
-        self.abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
-
-    def file(self, virus):
-        for subdir, dirs, files in os.walk(self.output_path):
-            for filename in files:        
-                filepath = subdir + os.sep + filename
-                if filepath.endswith("gene_summary.txt") and virus in filepath:          
-                    return filepath
-
-    @staticmethod
-    def host_factors(f1):
+    def host_factors(self, f1):
         dict_genes = {}
         df1  = pd.read_csv(f1, sep = '\t')
         df1 = df1.set_index('id')
@@ -42,8 +21,7 @@ class SingleAnalysis:
         
         return dict_genes, dict_mostcommon
 
-    @staticmethod
-    def sig_alpha(dict_genes, dict_mostcommon, virus):
+    def sig_alpha(self, dict_genes, dict_mostcommon, virus):
         sortedgenes = sorted(dict_genes.keys(), key=lambda x:x.lower())
         sortedsiggenes = sorted(dict_mostcommon.keys(), key=lambda x:x.lower())
 
@@ -91,10 +69,9 @@ class SingleAnalysis:
 
         return grey_df, red_df, df
 
-    def single_plot(self, virus, name_dict):
-        f1 = self.file(virus)
-        dict_genes, dict_mostcommon = self.host_factors(f1)
-        grey_df, red_df, df = self.sig_alpha(dict_genes, dict_mostcommon, virus)         
+    def single_plot(self, virus_path, virus_name):
+        dict_genes, dict_mostcommon = self.host_factors(virus_path)
+        grey_df, red_df, df = self.sig_alpha(dict_genes, dict_mostcommon, virus_path)         
         fig = px.scatter(df, x="Genes (Alphabetically)", y="Significance", color = '30 Most Enriched Genes', color_discrete_sequence=["grey", "red"])
 
         fig.add_trace(go.Scatter(
@@ -123,7 +100,7 @@ class SingleAnalysis:
         ))
 
         fig.update_layout(
-            hoverlabel=dict(bgcolor="white"), title_text = str(name_dict[virus]) + ' Host Factors (CRISPR Screen)'
+            hoverlabel=dict(bgcolor="white"), title_text = str(virus_name) + ' Host Factors (CRISPR Screen)'
         )
 
         fig.update_xaxes(showticklabels=False)

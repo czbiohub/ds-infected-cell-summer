@@ -1,0 +1,16 @@
+First Author,Virus Acronym,Virus,Publication,Link to raw data,Library Used,Status
+Marceau,DENV,Dengue virus 2 16681 strain,https://www.nature.com/articles/nature18631,https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA322191,GeCKO v2,
+Marceau,HCV,Hepatitis C virus JFH1,https://www.nature.com/articles/nature18631,https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA322191,GeCKO v2,
+Zhang,WNV,West Nile virus,https://dx.doi.org/10.1038%2Fnature18625,na,GeCKO v2,Not yet received 
+Diep,EV,enterovirus D68,https://www.nature.com/articles/s41564-019-0551-1,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8125/,GeCKO v2,
+Diep,RV,Rhinovirus C15,https://www.nature.com/articles/s41564-019-0551-1,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8125/,GeCKO v2,
+Flint,EBOV,Ebola (Mayinga),https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6336797/,na,GeCKO v2,Retreived 
+Wang,HCoV-OC43,Human coronavirus OC43,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Wang,HCoV-229E,Human coronavirus 229E,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Wang,SARS CoV2,SARS-CoV-2,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Schneider,HCoV-OC43 ,Human coronavirus OC43,https://doi.org/10.1016/j.cell.2020.12.006 ,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162038,Brunello ,
+Schneider,HCoV-229E,Human coronavirus 229E,https://doi.org/10.1016/j.cell.2020.12.006,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162038,Brunello ,
+Schneider,SARS CoV2,SARS-CoV-2,https://doi.org/10.1016/j.cell.2020.12.006,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162038,Brunello ,
+Schneider,HCoV-NL63,Human coronavirus NL63,https://doi.org/10.1016/j.cell.2020.12.006,https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE162038,Brunello ,
+Biering ,SARS CoV2,SARS-CoV-2,https://www.biorxiv.org/content/10.1101/2021.04.22.440848v1,na,GeCKO v2,Not yet received 
+Kulsuptrakul,HAV,Hepatitis A virus,https://www.sciencedirect.com/science/article/pii/S221112472100173X,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8646/,GeCKO v2,

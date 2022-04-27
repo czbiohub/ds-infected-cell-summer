@@ -17,15 +17,15 @@ export default function whereisthedata({
         <div>
           <Heading title="Data Release Policy" />
           <p>
-            Our goal is to make the data generated within this project rapidly
-            and broadly available to the scientific community as a community
-            resource. It is our intention to publish the work of this project in
-            a timely fashion, and we welcome collaborative interaction on the
-            project and analyses. However, considerable investment was made in
-            generating these data and we ask that you respect rights of first
-            publication and acknowledgment as outlined in the Toronto agreement
-            (Toronto International Data Release Workshop Authors. Prepublication
-            data sharing.{" "}
+            Our goal is to make the data generated within this project rapidly and broadly available to
+            the scientific community as a community resource. It is our
+            intention to publish the work of this project in a timely fashion,
+            and we welcome collaborative interaction on the project and
+            analyses. However, considerable investment was made in generating
+            these data and we ask that you respect rights of first publication
+            and acknowledgment as outlined in the Toronto agreement (Toronto
+            International Data Release Workshop Authors. Prepublication data
+            sharing.{" "}
             <a
               href="https://www.nature.com/articles/461168a"
               target="_blank"
@@ -124,15 +124,15 @@ export async function getStaticProps() {
     },
     {
       value: "Human coronavirus OC43",
-      label: "Human coronavirus OC43",
+      label: "Human coronavirus",
     },
     {
       value: "Human coronavirus 229E",
-      label: "Human coronavirus 229E",
+      label: "Human coronavirus",
     },
     {
       value: "Human coronavirus NL63",
-      label: "Human coronavirus NL63",
+      label: "Human coronavirus",
     },
     {
       value: "Hepatitis C virus JFH1",

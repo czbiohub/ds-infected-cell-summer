@@ -1,7 +1,6 @@
 import plotly.express as px
 import pandas as pd
 import numpy as np
-import os
 import plotly.graph_objects as go
 from collections import Counter
 from plotly.subplots import make_subplots

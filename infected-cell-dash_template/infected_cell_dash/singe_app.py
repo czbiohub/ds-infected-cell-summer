@@ -19,7 +19,6 @@ from pathlib import Path
 import argparse
 
 from single_analysis import SingleAnalysis
-import name_dict
 
 fig = go.Figure()
 

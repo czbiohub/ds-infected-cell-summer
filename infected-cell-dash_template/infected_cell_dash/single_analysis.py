@@ -6,7 +6,7 @@ import os
 from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
-from name_dict import acronym
+import name_dict
 
 fig = go.Figure()
 

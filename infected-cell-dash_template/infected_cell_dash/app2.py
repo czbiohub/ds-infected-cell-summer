@@ -16,6 +16,7 @@ from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
 import argparse
+from app import dash_heatmaps
 
 from dual_analysis import DualAnalysis
 
@@ -81,8 +82,22 @@ def dash_dual_analysis(output_path, requests_pathname_prefix="/"):
         Input("selected-vir1","value")
     )
 
-    def update_figure(l1):
-        fig = dual_analysis.num_vir(l1)
+    def update_figure(vir1, vir2):
+        df1 = dual_analysis.comparo(vir1, vir2, dual_analysis.tot_vir)
+        fig = px.scatter(df1, x='col_vir1', y='col_vir2', labels={
+        'col_vir1': dual_analysis.abbrev[vir1],
+        'col_vir2': dual_analysis.abbrev[vir2]},
+        title = 'Comparing Significance of Genes for ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2],
+        hover_name="Genes")
+
+        fig.add_trace(go.Scatter(
+            x= df1['col_vir1'],
+            y=df1['col_vir2'],
+            mode="text",
+            name="Gene Names",
+            text=df1['Genes'],
+            textposition="top center"
+        ))
 
         return fig
 

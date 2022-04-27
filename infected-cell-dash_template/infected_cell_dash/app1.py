@@ -1,5 +1,6 @@
 from __future__ import generator_stop
 from typing import Optional
+from black import out
 
 import dash
 from dash.dependencies import Input, Output
@@ -17,24 +18,24 @@ from plotly.subplots import make_subplots
 from pathlib import Path
 import argparse
 
-from heatmap import Heatmap
+from single_analysis import SingleAnalysis
 
 fig = go.Figure()
 
-def dash_heatmaps(output_path, pickle_path, requests_pathname_prefix="/"):
-    heatmap = Heatmap(output_path, pickle_path)
+def dash_single_analysis(output_path, requests_pathname_prefix="/"):
+    single_analysis = SingleAnalysis(output_path)
     app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
 
     class Ids:
         pass
-    
+
     app.layout = html.Div(
         children = [
             html.Div(children=[
                 html.Label('Virus 1'),
                 dcc.Dropdown(
                     id="selected-vir",
-                    value=["Wang_229E","Wang_OC43"],
+                    value="DENV",
                     options=[
                         {'label': 'Dengue', 'value': 'DENV'},
                         {'label': 'Enterovirus', 'value': 'EV'},
@@ -45,52 +46,37 @@ def dash_heatmaps(output_path, pickle_path, requests_pathname_prefix="/"):
                         {'label': 'Human Coronavirus OC43', 'value': 'Wang_OC43'},
                         {'label': 'SARS-CoV-2', 'value': 'Wang_SARS-CoV2'},
                     ],
-                    multi = True,
                 ),
             ],
         ),
             html.Div(
                 className="graphContainer",
                 children=[
-                    dcc.Graph(className="graph", id="heatmap"),
+                    dcc.Graph(className="graph", id="my_scatter"),
             ],
             )
         ],
         )
 
     @app.callback(
-        Output("heatmap","figure"),
+        Output("my_scatter","figure"),
         Input("selected-vir","value"),
     )
 
-    def update_figure(l1):
-        vir1 = l1[0]
-        vir2 = l1[1]
-        final_df, a, combined_df = heatmap.final([vir1, vir2], heatmap.tot_vir)
-        if not final_df.empty:
-                fig = px.imshow(final_df, labels=dict(x="Viruses", y="Genes", color="Significance (-log[pos score])"),
-                y=combined_df['Shared_Genes'][a], x = [heatmap.abbrev[vir1], heatmap.abbrev[vir2]], title=combined_df['Original Name_x'][a])
-                return fig
-        else:
-            data = [go.Heatmap( x=[], y=[], z=[])]
-            fig = go.Figure(data=data)
-
-            fig.update_layout(
-                title = 'No data to display'
-            )
-            return fig
+    def update_figure(vir1):
+        fig = single_analysis.single_plot(vir1, single_analysis.abbrev)
+        return fig
 
     return app
 
-def prod(output_path, pickle_path, requests_pathname_prefix="/"):
-    app = dash_heatmaps(output_path, pickle_path, requests_pathname_prefix)
+def prod(output_path, requests_pathname_prefix="/"):
+    app = dash_single_analysis(output_path, requests_pathname_prefix)
     return app.server
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("output_path", type=str)
-    parser.add_argument("pickle_path", type=str)
     args = parser.parse_args()
 
-    app = dash_heatmaps(args.output_path, args.pickle_path)
-    app.run_server(debug=True, port=8081)
+    app = dash_single_analysis(args.output_path)
+    app.run_server(debug=True, port=8083)

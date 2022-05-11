@@ -46,24 +46,7 @@ def dash_dual_analysis(output_path, requests_pathname_prefix="/"):
                         {'label': 'Human Coronavirus OC43', 'value': 'Wang_OC43'},
                         {'label': 'SARS-CoV-2', 'value': 'Wang_SARS-CoV2'},
                     ],
-                ),
-            ],
-        ),
-                    html.Div(children=[
-                html.Label('Virus 2'),
-                dcc.Dropdown(
-                    id="selected-vir1",
-                    value="DENV",
-                    options=[
-                        {'label': 'Dengue', 'value': 'DENV'},
-                        {'label': 'Enterovirus', 'value': 'EV'},
-                        {'label': 'Hepatitis A', 'value': 'HAV'},
-                        {'label': 'Hepatitis C', 'value': 'HCV'},
-                        {'label': 'Rhinovirus', 'value': 'RV'},
-                        {'label': 'Human Coronavirus 229E', 'value': 'Wang_229E'},
-                        {'label': 'Human Coronavirus OC43', 'value': 'Wang_OC43'},
-                        {'label': 'SARS-CoV-2', 'value': 'Wang_SARS-CoV2'},
-                    ],
+                    multi=True
                 ),
             ],
         ),
@@ -78,26 +61,11 @@ def dash_dual_analysis(output_path, requests_pathname_prefix="/"):
 
     @app.callback(
         Output("my_compare","figure"),
-        Input("selected-vir","value"),
         Input("selected-vir1","value")
     )
 
-    def update_figure(vir1, vir2):
-        df1 = dual_analysis.comparo(vir1, vir2, dual_analysis.tot_vir)
-        fig = px.scatter(df1, x='col_vir1', y='col_vir2', labels={
-        'col_vir1': dual_analysis.abbrev[vir1],
-        'col_vir2': dual_analysis.abbrev[vir2]},
-        title = 'Comparing Significance of Genes for ' + dual_analysis.abbrev[vir1] +  ' and ' + dual_analysis.abbrev[vir2],
-        hover_name="Genes")
-
-        fig.add_trace(go.Scatter(
-            x= df1['col_vir1'],
-            y=df1['col_vir2'],
-            mode="text",
-            name="Gene Names",
-            text=df1['Genes'],
-            textposition="top center"
-        ))
+    def update_figure(l1):
+        fig = dual_analysis.num_vir(l1)
 
         return fig
 

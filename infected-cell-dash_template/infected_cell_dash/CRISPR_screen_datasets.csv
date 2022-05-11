@@ -1,0 +1,10 @@
+First Author,Virus Acronym,Virus,Publication,Link to raw data,Library Used,Status
+Marceau,DENV,Dengue,https://www.nature.com/articles/nature18631,https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA322191,GeCKO v2,
+Marceau,HCV,Hepatitis C,https://www.nature.com/articles/nature18631,https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA322191,GeCKO v2,
+Diep,EV,Enterovirus,https://www.nature.com/articles/s41564-019-0551-1,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8125/,GeCKO v2,
+Diep,RV,Rhinovirus,https://www.nature.com/articles/s41564-019-0551-1,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8125/,GeCKO v2,
+Flint,EBOV,Ebola,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6336797/,na,GeCKO v2,Retreived 
+Wang,Wang_OC43,Human Coronavirus OC43,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Wang,Wang_229E,Human Coronavirus 229E,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Wang,Wang_SARS-CoV2,SARS-CoV-2,https://doi.org/10.1016/j.cell.2020.12.004,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-9638/,GeCKO v2,
+Kulsuptrakul,HAV,Hepatitis A,https://www.sciencedirect.com/science/article/pii/S221112472100173X,https://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-8646/,GeCKO v2,

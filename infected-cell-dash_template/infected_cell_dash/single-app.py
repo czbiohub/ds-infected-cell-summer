@@ -140,6 +140,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
         ],
     )
 
+    #creating the significance scatter, shows significance of each gene against its alphabetical position
     @app.callback(
         Output("significance-scatter","figure"),
         Input("vir","value"),
@@ -153,6 +154,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
         fig = single_analysis.single_plot(data_path, sig_num, metric, input_genes, hover_metrics, vir)
         return fig
 
+    #scatters genes by two metrics defined by the user
     @app.callback(
         Output("two-metric-scatter","figure"),
         Input("vir","value"),
@@ -166,6 +168,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
         fig = single_analysis.sig_rank(data_path, sig_num, metric, input_genes, hover_metrics, vir)
         return fig
 
+    #making call back so that user can search by gene
     @app.callback(
         Output("search_genes", "options"),
         Input("vir", "value")

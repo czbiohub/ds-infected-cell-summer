@@ -8,6 +8,7 @@ from plotly.subplots import make_subplots
 from pathlib import Path
 fig = go.Figure()
 
+#get path
 def file(virus, data_path):
     for subdir, dirs, files in os.walk(data_path):
         for filename in files:
@@ -15,6 +16,7 @@ def file(virus, data_path):
             if filepath.endswith("gene_summary.txt") and virus in filepath:   
                 return filepath
 
+#get top hits, df is all genes not including significant ones and df_max is all significant genes
 def top_hits(f1, num, metric):
     df  = pd.read_csv(f1, sep = '\t')
     df = df.rename(columns={'id':'Genes'})
@@ -27,6 +29,7 @@ def top_hits(f1, num, metric):
     df_max = df_max.reset_index(drop=True)
     return df, df_max
 
+#spacing the genes out by their alphabetical order
 def sig_alpha(gen_df, max_df, gene_inputs, metric, hover, virus):
     grey_x = list()
     for i in gen_df.index:
@@ -66,6 +69,7 @@ def sig_alpha(gen_df, max_df, gene_inputs, metric, hover, virus):
 
     return red_df, grey_df, final_df
 
+#plotting significance vs. alphabetical order
 def single_plot(data_path, num, metric, gene_inputs, hover, virus):
     f1 = file(virus, data_path)
     df, df_max = top_hits(f1, num, metric)
@@ -107,6 +111,7 @@ def single_plot(data_path, num, metric, gene_inputs, hover, virus):
 
     return fig
 
+#plotting one metric against another, initially will show singificance vs. rank
 def sig_rank(data_path, num, metric_y, gene_inputs, hover_metrics, virus):
     metric_x = hover_metrics[0]
     f1 = file(virus, data_path)

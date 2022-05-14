@@ -35,6 +35,11 @@ label {
   width: 100%;
 }
 
+.graphStack {
+  height: 50vh;
+  width: 100%;
+}
+
 .graph {
   width: 100%;
   margin: 5px;
@@ -48,10 +53,18 @@ label {
 
 .dropdowns {
   display: flex;
-  width: 800px;
+  width: 1000px;
   gap: 5px;
 }
 
 .dropdown {
   width: 100%;
+}
+
+.single_dropdown{
+  width: 80%
+}
+
+.empty_dropdown{
+  margin-right : 30px
 }

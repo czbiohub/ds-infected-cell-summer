@@ -1,83 +1,70 @@
-import numpy as np
-import pandas as pd
 import os
+from os.path import isfile, join
+from os import listdir
+import pandas as pd
+import numpy as np
 from collections import Counter
 import plotly.express as px
+import plotly.express as px
+import plotly.graph_objects as go
 
-class DualAnalysis:
-    def __init__(self, output_path):
-        self.output_path = output_path
+import single_analysis
 
-        self.virus_list = ['DENV', 'EV', 'HAV', 'HCV', 'RV', 'Wang_229E', 'Wang_OC43', 'Wang_SARS-CoV2']
+def construct_vertical(gen_df, max_df, dist, inputs, vir, metric, hover):    
+    grey_x = list()
+    for i in gen_df.index:
+        grey_x.append(dist + 0.2*i/len(gen_df['Genes']))
+    
+    grey_df = pd.DataFrame()
+    grey_df['Gene'] = gen_df['Genes']
+    grey_df['Genes_Alpha'] = grey_x
+    grey_df['Significance'] = gen_df[metric]
+    for col in hover:
+        grey_df = pd.concat([grey_df, gen_df[col]], axis=1)
         
-        file_list = list()
-        for virus in self.virus_list:
-            file_list.append(self.file(virus))
+    red_df = pd.DataFrame()
+    red_df['Gene'] = max_df['Genes']
+    red_df['Genes_Alpha'] = [dist + 0.1]*len(max_df['Genes'])
+    red_df['Significance'] = max_df[metric]
+    for col in hover:
+        red_df = pd.concat([red_df, max_df[col]], axis=1)
+    
+    vertical_df = pd.concat([grey_df, red_df])
+    vertical_df['Virus'] = [vir]*len(vertical_df['Gene'])
+    
+    selected = list()
+    for gene in vertical_df['Gene']:
+        if gene in inputs:
+            selected.append('Yes')
+        else:
+            selected.append('No')
+    
+    vertical_df['Selected'] = selected
+    
+    return vertical_df
+
+def plot_vertical(data_path, input_genes, virs, metric, hover, num):  
+    dfs = list()
+    for i, vir in enumerate(virs):
+        f1 = single_analysis.file(vir, data_path)
+        df1, df_max1 = single_analysis.top_hits(f1, num, metric)
+        df1 = construct_vertical(df1, df_max1, 0.3*i, input_genes, vir, metric, hover)
+        dfs.append(df1)
         
-        self.sig_genes = list()
-        self.combined = list()
+    final_df = pd.concat(dfs)
+    fig = px.scatter(final_df, x='Genes_Alpha', y='Significance', hover_data=['Gene', 'Virus']+hover,
+                     color = 'Selected', color_discrete_sequence=["blue", "red"])
+    
+    l1 = list()
+    for x in range(len(virs)):
+        l1.append(0.1+0.3*x)
 
-        for file in file_list:
-            dict_genes, dict_mostcommon = self.host_factors(file)
-            self.sig_genes.append([*dict_mostcommon.keys()])
-            self.combined.append(dict_mostcommon)
-
-        self.mul_vir = dict(zip(self.virus_list, self.sig_genes))
-        self.tot_vir = dict(zip(self.virus_list, self.combined))
-
-        self.abbrev = dict()
-        self.abbrev['DENV'] = 'Dengue'
-        self.abbrev['HAV'] = 'Hepatitis A'
-        self.abbrev['HCV'] = 'Hepatitis C'
-        self.abbrev['RV'] = 'Rhinovirus'
-        self.abbrev['Wang_229E'] = 'HCoV 229E'
-        self.abbrev['Wang_OC43'] = 'HCoV OC43'
-        self.abbrev['Wang_SARS-CoV2'] = 'SARS-CoV-2'
-
-    def file(self, virus):
-        for subdir, dirs, files in os.walk(self.output_path):
-            for filename in files:        
-                filepath = subdir + os.sep + filename
-                if filepath.endswith("gene_summary.txt") and virus in filepath:          
-                    return filepath
-
-    @staticmethod
-    def host_factors(f1):
-        dict_genes = {}
-        df1  = pd.read_csv(f1, sep = '\t')
-        df1['id'] = df1['id'].str.upper()
-        df1 = df1.set_index('id')
-        dict1 = df1.to_dict(orient = 'index')
-        for key in dict1:
-            dict_genes[key] = -np.log(dict1[key]['pos|score'])
-        k = Counter(dict_genes)
-        dict_mostcommon = dict(k.most_common(500))
-        return dict_genes, dict_mostcommon
-
-    @staticmethod
-    def comparo(vir1, vir2, total_vir):
-        l1 = list()
-        l2 = list()
-        shared_genes = list()
-
-        for key in total_vir[vir1]:
-            if key in total_vir[vir2]:
-                l1.append(total_vir[vir1][key])
-                l2.append(total_vir[vir2][key])
-                shared_genes.append(key)
-        
-        df = pd.DataFrame()
-        df['Genes'] = shared_genes
-        df['col_vir1'] = l1
-        df['col_vir2'] = l2
-
-        return df
-
-    @staticmethod
-    def ratio(l1, l2):
-        assert len(l1) == len(l2)
-        count = 0
-        for i in range(len(l1)):
-                if 0.9 <= float(l1[i])/float(l2[i]) <= 1.1:
-                    count += 1
-        return(count, len(l1))
+    fig.update_layout(
+    xaxis = dict(
+        tickmode = 'array',
+        tickvals = l1,
+        ticktext = virs
+        )
+    )
+    
+    return fig

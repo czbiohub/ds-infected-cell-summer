@@ -58,20 +58,6 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                             ),
                         ],
                     ),
-
-                    html.Div(
-                        children=[
-                        html.Label(children= "# of Significant Genes"),
-                        dcc.Input(
-                            id='sig_num',
-                            value=30,
-                            type='number',
-                            min=0,
-                            max=2000,
-                            step=1)
-                        ],
-                    ),
-
                     html.Div(
                         className="dropdown",
                         children=[
@@ -128,21 +114,46 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                             ),
                         ],
                     ),
+
+                     html.Div(
+                        className="empty_dropdown",
+                    ),
+
+                    html.Div(className="dropdown",
+                    children=[
+                    html.Label(children= "# of Significant Genes"),
+                    dcc.Input(
+                        id='sig_num',
+                        value=15,
+                        type='number',
+                        min=0,
+                        max=2000,
+                        step=1)
+                    ],
+                ),
                 ],
             ),
+
             html.Div(
-                className="graphContainer",
-                children=[
-                    dcc.Graph(className="graph", id="significance-scatter"),
-                ],
+                id = "graph_positioning"
             ),
-            dcc.Graph(className="graph", id="two-metric-scatter")
         ],
     )
 
+    @app.callback(
+        Output("graph_positioning", "className"),
+        Input("sig_num", "value")
+    )
+
+    def update_className(sig_num):
+        if sig_num < 30:
+            return "graphContainer"
+        else:
+            return "graphStack"
+
     #creating the significance scatter, shows significance of each gene against its alphabetical position
     @app.callback(
-        Output("significance-scatter","figure"),
+        Output("graph_positioning","children"),
         Input("vir","value"),
         Input("metric", "value"),
         Input("search_genes", "value"),
@@ -151,22 +162,9 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
     )
 
     def update_figure(vir, metric, input_genes, sig_num, hover_metrics):
-        fig = single_analysis.single_plot(data_path, sig_num, metric, input_genes, hover_metrics, vir)
-        return fig
-
-    #scatters genes by two metrics defined by the user
-    @app.callback(
-        Output("two-metric-scatter","figure"),
-        Input("vir","value"),
-        Input("metric", "value"),
-        Input("search_genes", "value"),
-        Input("sig_num", "value"),
-        Input("hover_metrics", "value")
-    )
-
-    def update_figure(vir, metric, input_genes, sig_num, hover_metrics):
-        fig = single_analysis.sig_rank(data_path, sig_num, metric, input_genes, hover_metrics, vir)
-        return fig
+        fig1 = single_analysis.single_plot(data_path, sig_num, metric, input_genes, hover_metrics, vir)
+        fig2 = single_analysis.sig_rank(data_path, sig_num, metric, input_genes, hover_metrics, vir)
+        return [dcc.Graph(figure = fig1), dcc.Graph(figure = fig2)]
 
     #making call back so that user can search by gene
     @app.callback(

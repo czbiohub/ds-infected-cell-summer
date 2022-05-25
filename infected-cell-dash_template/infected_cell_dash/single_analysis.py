@@ -8,7 +8,8 @@ from plotly.subplots import make_subplots
 from pathlib import Path
 fig = go.Figure()
 
-#get path
+#returns the path to the gene_summary file for a specific virus
+#input the virus acronym and the path to where all the data is held. When running locally, need to provide data path to dash app
 def file(virus, data_path):
     for subdir, dirs, files in os.walk(data_path):
         for filename in files:
@@ -16,7 +17,13 @@ def file(virus, data_path):
             if filepath.endswith("gene_summary.txt") and virus in filepath:   
                 return filepath
 
-#get top hits, df is all genes not including significant ones and df_max is all significant genes
+
+#f1 is the file path to the gene_summary file for a specific virus
+#num is the number of significant genes, as selected by the user
+#metric is the metric of significance (positive score, rank, etc.), as selected by the user
+#returns two data frames
+#df has all the genes except for the significant ones
+#df_max has all the significant genes
 def top_hits(f1, num, metric):
     df  = pd.read_csv(f1, sep = '\t')
     df = df.rename(columns={'id':'Genes'})
@@ -29,7 +36,15 @@ def top_hits(f1, num, metric):
     df_max = df_max.reset_index(drop=True)
     return df, df_max
 
-#spacing the genes out by their alphabetical order
+#gen_df is the data frame with all the genes except for the signficant ones
+#df_max is the data frame with all the significant genes
+#gene inputs is a list of genes the user wants to highlight in the graph
+#hover is a list of metrics (positive score, rank, etc.) the user wants in the hover template on the graph
+#reutrns three data frames
+#red_df is the data frame of significant genes (that will be in red on the graph)
+#grey_df is the data frame of non-significant genes
+#final_df is the concatination of grey and red df
+#Genes_Alpha gives the x-coordinate of each point, genes are ordered alphabetically on the x-axis
 def sig_alpha(gen_df, max_df, gene_inputs, metric, hover, virus):
     grey_x = list()
     for i in gen_df.index:
@@ -69,7 +84,7 @@ def sig_alpha(gen_df, max_df, gene_inputs, metric, hover, virus):
 
     return red_df, grey_df, final_df
 
-#plotting significance vs. alphabetical order
+#returns plot of significance vs. alphabetical order
 def single_plot(data_path, num, metric, gene_inputs, hover, virus):
     f1 = file(virus, data_path)
     df, df_max = top_hits(f1, num, metric)
@@ -112,6 +127,8 @@ def single_plot(data_path, num, metric, gene_inputs, hover, virus):
     return fig
 
 #plotting one metric against another, initially will show singificance vs. rank
+#metric_x is the metric that will be plotted on the x-axis
+#metric_y is the metric that will be plotted on the y-axis
 def sig_rank(data_path, num, metric_y, gene_inputs, hover_metrics, virus):
     metric_x = hover_metrics[0]
     f1 = file(virus, data_path)

@@ -145,13 +145,15 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
         Input("sig_num", "value")
     )
 
+    #if the user choses a number less than 30 as their num of sig genes, graphs side by side
+    #else put the graphs stacked as to not crowd
+    #both of these are defined in styles.css (under assets)
     def update_className(sig_num):
         if sig_num < 30:
             return "graphContainer"
         else:
             return "graphStack"
 
-    #creating the significance scatter, shows significance of each gene against its alphabetical position
     @app.callback(
         Output("graph_positioning","children"),
         Input("vir","value"),

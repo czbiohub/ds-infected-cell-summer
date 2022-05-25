@@ -10,7 +10,15 @@ import plotly.graph_objects as go
 
 import single_analysis
 
-def construct_vertical(gen_df, max_df, dist, inputs, vir, metric, hover):    
+#gen_df is the data frame with all the genes except for the signficant ones
+#df_max is the data frame with all the significant genes
+#dist is the distance between the clumps of data for each virus
+#gene inputs is a list of genes the user wants to highlight in the graph
+#hover is a list of metrics (positive score, rank, etc.) the user wants in the hover template on the graph
+#returns a df for an individual virus
+#significant genes have same x-axis, sig genes vertically stacked by significance
+#non-sig genes are ordered alphabetically within a specific x-axis range
+def construct_vertical(gen_df, max_df, dist, gene_inputs, vir, metric, hover):    
     grey_x = list()
     for i in gen_df.index:
         grey_x.append(dist + 0.2*i/len(gen_df['Genes']))
@@ -34,7 +42,7 @@ def construct_vertical(gen_df, max_df, dist, inputs, vir, metric, hover):
     
     selected = list()
     for gene in vertical_df['Gene']:
-        if gene in inputs:
+        if gene in gene_inputs:
             selected.append('Yes')
         else:
             selected.append('No')
@@ -43,6 +51,9 @@ def construct_vertical(gen_df, max_df, dist, inputs, vir, metric, hover):
     
     return vertical_df
 
+#virs is all viruses provided by user
+#num is the number of singificant genes
+#returns a figure of the vertical graphs on a plot
 def plot_vertical(data_path, input_genes, virs, metric, hover, num):  
     dfs = list()
     for i, vir in enumerate(virs):

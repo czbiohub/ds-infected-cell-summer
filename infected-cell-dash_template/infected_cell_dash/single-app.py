@@ -105,9 +105,9 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                         className="dropdown",
                         children=[
                             html.Label(children="Search for Genes"),
+                            # TODO: Fix init value crashing app
                             dcc.Dropdown(
                                 id="search_genes",
-                                value=['MAGT1'],
                                 placeholder="",
                                 multi = True
                             ),

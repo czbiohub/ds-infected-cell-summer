@@ -1,6 +1,5 @@
 from __future__ import generator_stop
 from typing import Optional
-from black import out
 
 import dash
 from dash.dependencies import Input, Output
@@ -193,7 +192,8 @@ def prod(data_path, requests_pathname_prefix="/"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("data_path", type=str)
+    parser.add_argument("--host", type=str, default="localhost")
     args = parser.parse_args()
 
     app = dash_single_analysis(args.data_path)
-    app.run_server(debug=True, port=8089) 
+    app.run_server(debug=True, port=8089, host=args.host) 

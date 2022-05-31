@@ -165,7 +165,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
     def update_figure(vir, metric, input_genes, sig_num, hover_metrics):
         fig1 = single_analysis.single_plot(data_path, sig_num, metric, input_genes, hover_metrics, vir)
         fig2 = single_analysis.sig_rank(data_path, sig_num, metric, input_genes, hover_metrics, vir)
-        return [dcc.Graph(figure = fig1), dcc.Graph(figure = fig2)]
+        return [dcc.Graph(figure = fig1, className="graph"), dcc.Graph(figure = fig2, className="graph")]
 
     #making call back so that user can search by gene
     @app.callback(

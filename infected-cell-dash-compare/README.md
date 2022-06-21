@@ -14,6 +14,6 @@ To run a dash app using sample CRISPR screen data comparison
 4. To point VSCode to the right conda environment, select the `src/app.py` file.
 5. Wait a few seconds for VSCode's Python extension to get started up.
 6. In the bottom right corner, there should be a button that says "Select Python Interpreter". Click it and it should bring up a menu in the top middle. Select the environment that says `Python 3.XX.X ('dash-ds-infected-cell')`.
-7. You're ready! Opening the terminal in VSCode will automatically put you in the correct environment. Note that some Python files may require an argument to the path where the data is. For example, to run `single-app.py`, the command would be like `python single-app.py PATH_TO_FOLDER/output_072321/`.
+7. You're ready! Opening the terminal in VSCode will automatically put you in the correct environment to run the Python files. Note that some Python files may require an argument to the path where the data is. For example, to run `single-app.py`, the command would be like `python single-app.py PATH_TO_FOLDER/output_072321/`.
 
 Visual Studio Code will remember all these settings, so there is no need to open the terminal and repeating these steps. Just open the folder in VSCode next time you need to open this project.

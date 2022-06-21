@@ -1,6 +1,7 @@
 {
   "eslint.workingDirectories": ["./infected-cell-portal"],
   "python.analysis.extraPaths": [
-    "./infected-cell-dash_template/infected_cell_dash"
+    "./infected-cell-dash_template",
+    "./infected-cell-dash-compare"
   ]
 }

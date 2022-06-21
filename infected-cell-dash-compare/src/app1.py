@@ -1,6 +1,5 @@
 from __future__ import generator_stop
 from typing import Optional
-from black import out
 
 import dash
 from dash.dependencies import Input, Output

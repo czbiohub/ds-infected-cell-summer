@@ -1,3 +1,4 @@
+from tkinter import font
 import plotly.express as px
 import pandas as pd
 import numpy as np
@@ -6,6 +7,7 @@ import os
 from collections import Counter
 from plotly.subplots import make_subplots
 from pathlib import Path
+
 fig = go.Figure()
 
 #returns the path to the gene_summary file for a specific virus
@@ -16,7 +18,6 @@ def file(virus, data_path):
             filepath = subdir + os.sep + filename
             if filepath.endswith("gene_summary.txt") and virus in filepath:   
                 return filepath
-
 
 #f1 is the file path to the gene_summary file for a specific virus
 #num is the number of significant genes, as selected by the user
@@ -90,7 +91,7 @@ def single_plot(data_path, num, metric, gene_inputs, hover, virus):
     df, df_max = top_hits(f1, num, metric)
     red_df, grey_df, final_df = sig_alpha(df, df_max, gene_inputs, metric, hover, virus)         
     fig = px.scatter(final_df, x="Genes_Alpha", y="Significance", color = 'Color',
-                        color_discrete_sequence=["grey", "red", "blue"], labels={'Genes_Alpha':'Genes Alphabetically'})
+                        color_discrete_sequence=["grey", "red", "blue"], labels={'Genes_Alpha':'Genes Alphabetically'}, title=(virus + " " + gene_inputs))
 
     fig.add_trace(go.Scatter(
         x= red_df['Genes_Alpha'],
@@ -118,8 +119,9 @@ def single_plot(data_path, num, metric, gene_inputs, hover, virus):
         "Gene Name: %{text}"
     ))
 
-#  fig.update_layout(
-#     hoverlabel=dict(bgcolor="white"), title_text = str(name_dict.acronym(virus)) + ' Host Factors (CRISPR Screen)'
+    fig.update_layout(font_family = 'Inter')
+    #fig.update_layout(
+    #    hoverlabel=dict(bgcolor="white"), title_text = str(name_dict.acronym(virus)) + ' Host Factors (CRISPR Screen)'
     #)
 
     fig.update_xaxes(showticklabels=False)
@@ -149,4 +151,5 @@ def sig_rank(data_path, num, metric_y, gene_inputs, hover_metrics, virus):
 
     fig = px.scatter(final_df, x=metric_x, y=metric_y, color = 'Color',
                         color_discrete_sequence=["grey", "red", "blue"])
+    fig.update_layout(font_family = 'Inter')
     return fig

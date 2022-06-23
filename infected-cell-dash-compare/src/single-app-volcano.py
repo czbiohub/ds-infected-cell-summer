@@ -7,6 +7,7 @@ from dash.dependencies import Input, Output
 from dash.exceptions import PreventUpdate
 from dash import dcc
 from dash import html
+from dash import dash_table
 
 import pandas as pd
 import numpy as np
@@ -21,6 +22,45 @@ import argparse
 import single_analysis
 
 fig = go.Figure()
+
+############################################
+# Filter Data 
+def filter_df(curr_df, effect_size=[-1,1], pv=2):
+    curr_df.lower_limit = effect_size[0]
+    curr_df.upper_limit = effect_size[1]
+    curr_df["color"] = np.where((curr_df["pos|lfc"] > curr_df.upper_limit) & (-np.log(curr_df["pos|p-value"]) > pv), "Positive hit: Significant & Enriched", 
+        np.where((curr_df["pos|lfc"] < curr_df.lower_limit) & (-np.log(curr_df["pos|p-value"]) > pv), "Negative hit: Significant & Enriched", "Neither"))
+    
+    ret = curr_df[["id", "pos|p-value", "pos|rank", "pos|lfc", "color"]]
+    ret = ret.set_axis(['Gene id', 'P-Value', 'Rank', 'LFC', 'Color'], axis=1, inplace=False)
+    return ret 
+
+# Create table of significant and enriched genes 
+def get_sig_df(curr_df):
+    return curr_df[curr_df.Color.str.endswith("Significant & Enriched")]
+
+# Create Volcano Plot
+def volcano_plot(curr_df):
+    fig = px.scatter(
+                curr_df,
+                x= "LFC",
+                y= -np.log(curr_df["P-Value"]),
+                color="Color",
+                color_discrete_sequence=["green", "gray", "red"],
+                hover_data=["Gene id", "P-Value", "LFC"]    
+            )
+    fig.update_layout(
+        title="Volcano Plot",
+        xaxis_title="Log Fold Change",
+        yaxis_title="-Log(p-value)",
+        legend_title="Color Legend",
+        font_family='Inter'
+    )
+    return fig
+
+# TO DO: path to example gene_summary.txt data should be inserted here
+df_raw = pd.read_csv('/Users/nathaniel.delrosario/Downloads/mageck_nextflow_out/Broeckel_SARS-CoV1_Gecko_/rra/Broeckel_SARS-CoV1_Gecko_.gene_summary.txt', sep="\t")
+df = filter_df(df_raw)
 
 def dash_single_analysis(data_path, requests_pathname_prefix="/"):
     app = dash.Dash(__name__, requests_pathname_prefix=requests_pathname_prefix)
@@ -50,7 +90,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                                     {'label': 'Dengue Virus Philippines H871856 (Ooi et al.)', 'value': 'Ooi_DENV3_Philippines-H871856_'},
                                     {'label': 'Dengue Virus BC287-97 (Ooi et al.)', 'value': 'Ooi_DENV4_BC287-97_'},
                                     {'label': 'Enterovirus (Diep et al.)', 'value': 'Diep_EV_'},
-                                    {'label': 'Ebola Virus', 'value': 'EBOV_AB_'},
+                                    {'label': 'Ebola Virus (Flint et al.)', 'value': 'EBOV_AB_'},
                                     {'label': 'Kaposi\'s sarcoma-associated Herpesvirus (Carolina Arias et al.)', 'value': 'KSHV_CRISPRi'},
                                     {'label': 'Human Corona Virus 229E (schnieder)', 'value': 'Schneider_HCoV-229E_'},
                                     {'label': 'Human Corona Virus NL63 (schnieder)', 'value': 'Schneider_HCoV-NL63_'},
@@ -118,7 +158,7 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
                                     {'label': 'Positive Log Fold Change', 'value': 'pos|lfc'},
                                 ],
                                 clearable=True,
-                                multi = False,
+                                multi = True,
                                 optionHeight = 50                      
                             ),
                         ],
@@ -166,9 +206,74 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
             html.Div(
                 id = "graph_positioning"
             ),
-        ],
-    )
 
+        html.Div([
+
+            # P value slider
+            html.Div(children = [
+                html.Div(children = [
+                    dcc.Slider(
+                        id='pvalue',
+                        min=0,
+                        max=16,
+                        step=0.1,
+                        marks={i: {'label': str(i)} for i in range(0, 16)},
+                        value=2,
+                        vertical=True
+                    )
+                ], style={'display': 'inline-block'}),
+
+                # Volcano plot 
+                html.Div(children = [
+                    dcc.Graph(
+                        id='volcanoplot',
+                        figure=volcano_plot(df)
+                    )
+                ], style={'display': 'inline-block', 'width': '43%', 'font-family': 'Inter'}),
+
+                # Table container
+                html.Div(children=[
+                    html.Label("Table of Significant and Enriched Genes"),
+                        html.Div("(Click off table to reset filtering)"), 
+                    dash_table.DataTable(
+                        id='sig_table',
+                        data=get_sig_df(df).to_dict('records'),
+                        columns=[{"name": i, "id": i} for i in df.columns],
+                        style_table={'height': 421.5, 'overflowX': 'auto', 'font-family':'Inter', 'border': '2px solid grey'},
+                        style_as_list_view = True,
+                        style_header={'border': '2px solid grey'},
+                        filter_action = 'native',
+                        filter_query = '',
+                        sort_action='custom',
+                        sort_mode='multi',
+                        sort_by=[],
+                        export_format="csv",
+                        page_size=12,
+                        style_cell={'fontSize':14, 
+                                    'font-family': 'Inter', 
+                                    'textAlign': 'left', 
+                                    },
+                        style_data={
+                            'font-family': 'Inter'
+                        }
+                    )
+                ], style={'display': 'inline-block', 'width': '43%', 'flex': 100, 'padding-top': '50px'}),
+
+                # LFC slider
+                html.Div(children=[
+                    dcc.RangeSlider(
+                        id='lfc range',
+                        min=-6,
+                        max=8,
+                        step=0.1,
+                        marks={i: {'label': str(i)} for i in range(-6, 8)},
+                        value=[-0.5, 1],
+                        vertical = False
+                    ), 
+                ], style={'display': 'inline-block', 'width': '45%'})
+            ]),
+        ]),
+    ])
 
     # callback 1
     @app.callback(
@@ -221,11 +326,35 @@ def dash_single_analysis(data_path, requests_pathname_prefix="/"):
         } for idx in range(len(df1['Genes']))
         ]
 
-    return app
+    def prod(data_path, requests_pathname_prefix="/"):
+        app = dash_single_analysis(data_path, requests_pathname_prefix)
+        return app.server
 
-def prod(data_path, requests_pathname_prefix="/"):
-    app = dash_single_analysis(data_path, requests_pathname_prefix)
-    return app.server
+    ############################################   
+
+    # Update Volcano Plot
+    @app.callback(
+        Output('volcanoplot', 'figure'),
+        Input('lfc range', 'value'),
+        Input('pvalue', 'value')
+    )
+
+    def update_volcanoplot(lfc_range, pvalue):
+        res_df = filter_df(df_raw, effect_size = lfc_range, pv = pvalue)
+        return volcano_plot(res_df)
+
+    # Update table of significant genes for Volcano plot 
+    @app.callback(
+        Output('sig_table', 'data'),
+        Input('lfc range', 'value'),
+        Input('pvalue', 'value')
+    )
+
+    def update_sig_table(lfc_range, pvalue):
+        res_df = filter_df(df_raw, effect_size = lfc_range, pv = pvalue)
+        return get_sig_df(res_df).to_dict('records')
+
+    return app
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

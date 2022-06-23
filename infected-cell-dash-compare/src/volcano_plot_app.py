@@ -53,7 +53,7 @@ def volcano_plot(curr_df):
     return fig
 
 # TO DO: path to example gene_summary.txt data should be inserted here
-df_raw = pd.read_csv('data/Broeckel_SARS-CoV1/rra/Broeckel_SARS-CoV1_Gecko_.gene_summary.txt', sep="\t")
+df_raw = pd.read_csv('/Users/nathaniel.delrosario/Downloads/mageck_nextflow_out/Broeckel_SARS-CoV1_Gecko_/rra/Broeckel_SARS-CoV1_Gecko_.gene_summary.txt', sep="\t")
 df = filter_df(df_raw)
 
 ############################################
@@ -71,6 +71,7 @@ app.layout = html.Div(children = [
                 value=[-0.5, 1]
             ), 
         ], style={'display': 'inline-block', 'width': '45%'}),
+        
         # P value slider
         html.Div(children = [
             html.Div(children = [
@@ -91,7 +92,7 @@ app.layout = html.Div(children = [
                     id='volcanoplot',
                     figure=volcano_plot(df)
                 )
-            ], style={'display': 'inline-block', 'width': '43%'}),
+            ], style={'display': 'inline-block', 'width': '43%', 'font-family': 'Inter'}),
 
             # Table container
             html.Div(children=[
@@ -100,11 +101,15 @@ app.layout = html.Div(children = [
                     id='sig_table',
                     data=get_sig_df(df).to_dict('records'),
                     columns=[{"name": i, "id": i} for i in df.columns],
-                    style_table={'height': 400, 'overflowX': 'auto'},
+                    style_table={'height': 400, 'overflowX': 'auto', 'font-family':'Inter'},
                     export_format="csv",
                     page_size=12,
+                    style_cell={'fontSize':14, 'font-family': 'Inter', 'textAlign': 'left', 'border': '1px solid grey'},
+                    style_data={
+                        'font-family': 'Inter'
+                    }
                 )
-            ], style={'display': 'inline-block', 'width': '43%'})
+            ], style={'display': 'inline-block', 'width': '43%', 'flex': 100})
         ]),
     ]),
 ])
